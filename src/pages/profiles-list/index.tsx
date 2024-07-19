@@ -1,16 +1,11 @@
-import ProfileCard from "@/components/profile-card";
+import ProfilesFilters from "./profiles-filters";
+import ProfilesTable from "./profiles-table";
 
 export default function ProfilesList() {
   return (
-    <>
-      <div className="grid grid-cols-3 gap-3">
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-      </div>
-    </>
+    <div className="flex flex-col gap-5">
+      <ProfilesFilters />
+      <ProfilesTable />
+    </div>
   );
 }

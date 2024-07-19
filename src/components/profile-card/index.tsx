@@ -2,9 +2,11 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Building, MapPin } from "lucide-react";
 import ProfileCardPopoverMenu from "./profile-card-popover-menu";
+import { ProfileResponse } from "@/api/profiles";
 
+import moment from 'moment';
 
-export default function ProfileCard() {
+export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
   return (
     <div className="bg-white w-full rounded-lg border p-4">
       <div>
@@ -16,20 +18,22 @@ export default function ProfileCard() {
           />
           <div className="flex flex-1 flex-col pl-3">
             <span className="font-medium text-sm text-black">
-              Allyson Maciel Guimarães
+              {profile.username}
             </span>
             <span className="font-medium text-sm text-zinc-500">
-              https://allyson.dev
+              {profile.profile_url}
             </span>
             <div className="flex items-center gap-1">
               <MapPin size={15} />
               <span className="font-medium text-sm text-black">
-                Anápolis, Goiás
+                {profile.location}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <Building size={15} />
-              <span className="font-medium text-sm text-black">Github</span>
+              <span className="font-medium text-sm text-black">
+                {profile.organization_name}
+              </span>
             </div>
           </div>
 
@@ -41,22 +45,30 @@ export default function ProfileCard() {
 
       <div className="grid grid-cols-4 mt-4 gap-3">
         <div className="flex flex-col items-center">
-          <span className="font-medium text-sm text-zinc-500">Fallows</span>
-          <span className="font-bold text-sm text-black">100</span>
+          <span className="font-medium text-sm text-zinc-500">Follows</span>
+          <span className="font-bold text-sm text-black">
+            {profile.followers_count}
+          </span>
         </div>
         <div className="flex flex-col items-center">
-          <span className="font-medium text-sm text-zinc-500">Fallowing</span>
-          <span className="font-bold text-sm text-black">100</span>
+          <span className="font-medium text-sm text-zinc-500">Following</span>
+          <span className="font-bold text-sm text-black">
+            {profile.following_count}
+          </span>
         </div>
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Stars</span>
-          <span className="font-bold text-sm text-black">100</span>
+          <span className="font-bold text-sm text-black">
+            {profile.stars_count}
+          </span>
         </div>
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">
             Contributions
           </span>
-          <span className="font-bold text-sm text-black">100</span>
+          <span className="font-bold text-sm text-black">
+            {profile.year_contributions_count}
+          </span>
         </div>
       </div>
 
@@ -71,7 +83,9 @@ export default function ProfileCard() {
         </div>
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Last Update</span>
-          <span className="font-bold text-sm text-black">5 days ago</span>
+          <span className="font-bold text-sm text-black">
+            {moment(profile.updated_at).fromNow()}
+          </span>
         </div>
       </div>
     </div>
