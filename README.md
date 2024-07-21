@@ -63,3 +63,5 @@ Também foram adotadas boas práticas de gestão de estado utilizando parâmetro
 - Atualmente, a biblioteca React Query no projeto invalida o cache da lista principal sempre que uma mutação é bem-sucedida. Como resultado, o frontend precisa recarregar os dados da lista toda vez que essa ação ocorre. Uma solução mais eficiente seria atualizar o item diretamente no cache local em vez de invalidá-lo completamente.
 
 - É necessário refatorar alguns componentes para adotar o padrão de composição, com destaque para o componente ProfileCard.
+
+- Implementar alguma solução de internacionalização.
