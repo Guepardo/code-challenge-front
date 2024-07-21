@@ -55,6 +55,7 @@ export default function ProfileCardPopoverMenu({
         description: "Failed to refresh profile. Please try again",
       });
     }
+    setOpen(false);
   }
 
   return (
