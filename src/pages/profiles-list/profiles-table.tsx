@@ -3,6 +3,7 @@ import ProfileCard from "@/components/profile-card";
 import { getProfiles } from "@/api/profiles";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/pagination";
+import ProfilesTableSkeleton from "./profiles-table-skeleton";
 
 export default function ProfilesTable() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,7 +24,7 @@ export default function ProfilesTable() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <ProfilesTableSkeleton />;
   }
 
   if (!data) {

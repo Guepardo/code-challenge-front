@@ -29,11 +29,13 @@ export default function ProfileCardPopoverMenu({
   });
 
   function handleShortLink() {
-    navigator.clipboard.writeText(`${import.meta.env.VITE_BASE_URL}/${profile.nanoid}`);
+    const link = `${import.meta.env.VITE_BASE_URL}/${profile.nanoid}`;
+
+    navigator.clipboard.writeText(link);
 
     toast({
       title: "Copied",
-      description: "Link copied to clipboard ",
+      description: `Link "${link}" was successfully copied to clipboard`,
     });
 
     setOpen(false);

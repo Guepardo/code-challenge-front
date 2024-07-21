@@ -16,7 +16,7 @@ import {
   NewProfileSchemaType,
 } from "@/schemas/profile-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ProfileResponse, updateProfile } from "@/api/profiles";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
@@ -36,6 +36,8 @@ export default function ProfileCardEditDialog({
 }: ProfileCardEditDialogType) {
   const [open, setOpen] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const methods = useForm<NewProfileSchemaType>({
     resolver: zodResolver(newProfileSchema),
     values: {
@@ -46,6 +48,9 @@ export default function ProfileCardEditDialog({
 
   const { mutateAsync: updateProfileMutation } = useMutation({
     mutationFn: (data: NewProfileSchemaType) => updateProfile(profile.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
+    },
   });
 
   async function handleSubmit(data: NewProfileSchemaType) {
