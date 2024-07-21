@@ -9,7 +9,7 @@ export default function ProfilesTable() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const term = searchParams.get("term") || "";
-  const page = searchParams.get("page") || '1';
+  const page = searchParams.get("page") || "1";
 
   const { data, isLoading } = useQuery({
     queryKey: ["profiles", term, page],

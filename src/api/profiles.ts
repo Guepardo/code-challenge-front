@@ -57,3 +57,8 @@ export async function updateProfile(
   });
   return data;
 }
+
+export async function deleteProfile(id: string) {
+  const { data } = await api.delete(`/profiles/${id}`);
+  return data;
+}

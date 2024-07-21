@@ -87,7 +87,9 @@ export default function ProfileCardEditDialog({
           <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <ProfileForm />
             <DialogFooter>
-              <Button disabled={methods.formState.isSubmitting} type="submit">Save changes</Button>
+              <Button disabled={methods.formState.isSubmitting} type="submit">
+                Save changes
+              </Button>
             </DialogFooter>
           </form>
         </FormProvider>

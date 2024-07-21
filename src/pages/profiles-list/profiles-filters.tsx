@@ -36,7 +36,10 @@ export default function ProfilesFilters() {
 
   return (
     <div className="flex flex-row gap-2">
-      <form className="flex flex-1 gap-2" onSubmit={handleSubmit(handleApplyFilters)}>
+      <form
+        className="flex flex-1 gap-2"
+        onSubmit={handleSubmit(handleApplyFilters)}
+      >
         <Input
           className="flex-1"
           {...register("term")}

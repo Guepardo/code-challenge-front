@@ -10,12 +10,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
   const badgeColorsBySyncStatus: { [key: string]: string } = {
-    "pending": "bg-blue-400",
-    "failure": "bg-red-400",
-    "success": "bg-green-400",
+    pending: "bg-blue-400",
+    failure: "bg-red-400",
+    success: "bg-green-400",
   };
 
-  const badgeColor = badgeColorsBySyncStatus[profile.sync_status] || "bg-gray-400";
+  const badgeColor =
+    badgeColorsBySyncStatus[profile.sync_status] || "bg-gray-400";
 
   return (
     <div className="bg-white w-full rounded-lg border p-4">
@@ -86,8 +87,13 @@ export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
       <div className="grid grid-cols-2 mt-4 gap-3">
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Sync Status</span>
-          <Badge className={`rounded-full ${badgeColor} hover:${badgeColor}`} variant={"secondary"}>
-            <span className="font-bold text-sm text-white">{profile.sync_status}</span>
+          <Badge
+            className={`rounded-full ${badgeColor} hover:${badgeColor}`}
+            variant={"secondary"}
+          >
+            <span className="font-bold text-sm text-white">
+              {profile.sync_status}
+            </span>
           </Badge>
         </div>
         <div className="flex flex-col items-center">

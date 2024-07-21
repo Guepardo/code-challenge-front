@@ -4,10 +4,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { EllipsisVertical, Link, Logs, RefreshCw } from "lucide-react";
+import { EllipsisVertical, Link, RefreshCw, X } from "lucide-react";
 import ProfileCardEditDialog from "./profile-card-edit-dialog";
 import { Separator } from "../ui/separator";
-import { ProfileResponse } from "@/api/profiles";
+import { deleteProfile, ProfileResponse } from "@/api/profiles";
 import { toast } from "../ui/use-toast";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -21,11 +21,18 @@ export default function ProfileCardPopoverMenu({
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
+  function clearProfilesCache() {
+    queryClient.invalidateQueries({ queryKey: ["profiles"] });
+  }
+
   const { mutateAsync: profileSyncMutation } = useMutation({
     mutationFn: () => creteProfileSync(profile.id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profiles"] });
-    },
+    onSuccess: clearProfilesCache,
+  });
+
+  const { mutateAsync: deleteProfileMutation } = useMutation({
+    mutationFn: () => deleteProfile(profile.id),
+    onSuccess: clearProfilesCache,
   });
 
   function handleShortLink() {
@@ -58,6 +65,23 @@ export default function ProfileCardPopoverMenu({
     setOpen(false);
   }
 
+  async function handleDelete() {
+    try {
+      await deleteProfileMutation();
+      toast({
+        title: "Success",
+        description: "Profile deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete profile. Please try again",
+      });
+    }
+    setOpen(false);
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="hover:bg-accent rounded p-1">
@@ -79,9 +103,15 @@ export default function ProfileCardPopoverMenu({
         >
           <Link className="mr-2 h-4 w-4" /> Short Link
         </Button>
+
         <Separator className="my-1" />
-        <Button className="justify-start" variant={"ghost"}>
-          <Logs className="mr-2 h-4 w-4" /> Logs
+
+        <Button
+          className="justify-start"
+          variant={"destructive"}
+          onClick={handleDelete}
+        >
+          <X className="mr-2 h-4 w-4" /> Delete
         </Button>
       </PopoverContent>
     </Popover>
