@@ -25,6 +25,7 @@ export default function ProfilesFilters() {
     setSearchParams((params) => {
       if (term) {
         params.set("term", term);
+        params.delete("page");
       } else {
         params.delete("term");
       }
