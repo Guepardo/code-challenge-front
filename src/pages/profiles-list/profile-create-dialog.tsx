@@ -16,12 +16,14 @@ import {
   NewProfileSchemaType,
 } from "@/schemas/profile-schema";
 import { FormProvider, useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProfile } from "@/api/profiles";
 import { useState } from "react";
+import { toast } from "@/components/ui/use-toast";
 
 export default function ProfileCreateDialog() {
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const methods = useForm<NewProfileSchemaType>({
     resolver: zodResolver(newProfileSchema),
@@ -29,12 +31,27 @@ export default function ProfileCreateDialog() {
 
   const { mutateAsync: createProfileMutation } = useMutation({
     mutationFn: (data: NewProfileSchemaType) => createProfile(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
+    },
   });
+
   async function handleSubmit(data: NewProfileSchemaType) {
-    // TODO: improve this to handle error
-    createProfileMutation(data);
-    setOpen(false);
-    methods.reset();
+    try {
+      await createProfileMutation(data);
+      setOpen(false);
+      methods.reset();
+      toast({
+        title: "Success",
+        description: "Profile created successfully",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to create profile",
+      });
+    }
   }
 
   if (!methods.formState.isValid) {
@@ -58,7 +75,9 @@ export default function ProfileCreateDialog() {
           <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <ProfileForm />
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button disabled={methods.formState.isSubmitting} type="submit">
+                Save
+              </Button>
             </DialogFooter>
           </form>
         </FormProvider>

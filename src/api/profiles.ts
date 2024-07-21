@@ -3,7 +3,7 @@ import { PaginationSchema } from "./types/pagination";
 import { NewProfileSchemaType } from "@/schemas/profile-schema";
 
 export interface ProfileResponse {
-  id: number;
+  id: string;
   username: string;
   profile_url: string;
   organization_name?: string;
@@ -14,6 +14,8 @@ export interface ProfileResponse {
   stars_count: number;
   year_contributions_count: number;
   updated_at: string;
+  sync_status: string;
+  nanoid: string;
 }
 
 export interface GetProfilesResponse {
@@ -21,8 +23,16 @@ export interface GetProfilesResponse {
   meta: PaginationSchema;
 }
 
-export async function getProfiles() {
-  const { data } = await api.get<GetProfilesResponse>("/profiles");
+export async function getProfiles({
+  term,
+  page,
+}: {
+  term: string;
+  page: string;
+}) {
+  const { data } = await api.get<GetProfilesResponse>("/profiles", {
+    params: { term, page },
+  });
   return data;
 }
 

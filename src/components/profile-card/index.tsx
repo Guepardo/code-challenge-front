@@ -4,18 +4,19 @@ import { Building, MapPin } from "lucide-react";
 import ProfileCardPopoverMenu from "./profile-card-popover-menu";
 import { ProfileResponse } from "@/api/profiles";
 
-import moment from 'moment';
+import moment from "moment";
+import { formatNumber } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
   return (
     <div className="bg-white w-full rounded-lg border p-4">
       <div>
         <div className="flex items-center">
-          <img
-            className="rounded-full h-20 w-20"
-            src="https://avatars.githubusercontent.com/u/6763464?v=4"
-            alt=""
-          />
+          <Avatar className="rounded-full h-20 w-20">
+            <AvatarImage src={profile.avatar_url} />
+            <AvatarFallback>{profile.username[0].toUpperCase()}</AvatarFallback>
+          </Avatar>
           <div className="flex flex-1 flex-col pl-3">
             <span className="font-medium text-sm text-black">
               {profile.username}
@@ -26,18 +27,18 @@ export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
             <div className="flex items-center gap-1">
               <MapPin size={15} />
               <span className="font-medium text-sm text-black">
-                {profile.location}
+                {profile.location || "No location"}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <Building size={15} />
               <span className="font-medium text-sm text-black">
-                {profile.organization_name}
+                {profile.organization_name || "No organization"}
               </span>
             </div>
           </div>
 
-          <ProfileCardPopoverMenu />
+          <ProfileCardPopoverMenu profile={profile} />
         </div>
       </div>
 
@@ -47,19 +48,19 @@ export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Follows</span>
           <span className="font-bold text-sm text-black">
-            {profile.followers_count}
+            {formatNumber(profile.followers_count)}
           </span>
         </div>
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Following</span>
           <span className="font-bold text-sm text-black">
-            {profile.following_count}
+            {formatNumber(profile.following_count)}
           </span>
         </div>
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Stars</span>
           <span className="font-bold text-sm text-black">
-            {profile.stars_count}
+            {formatNumber(profile.stars_count)}
           </span>
         </div>
         <div className="flex flex-col items-center">
@@ -78,7 +79,7 @@ export default function ProfileCard({ profile }: { profile: ProfileResponse }) {
         <div className="flex flex-col items-center">
           <span className="font-medium text-sm text-zinc-500">Sync Status</span>
           <Badge variant={"secondary"}>
-            <span className="font-bold text-sm">Success</span>
+            <span className="font-bold text-sm">{profile.sync_status}</span>
           </Badge>
         </div>
         <div className="flex flex-col items-center">

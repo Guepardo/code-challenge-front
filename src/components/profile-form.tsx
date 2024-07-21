@@ -14,7 +14,7 @@ export default function ProfileForm() {
         <Input
           {...register("username")}
           id="username"
-          placeholder="Allyson Maciel"
+          placeholder="example: Linus Torvalds"
           className="col-span-3"
         />
       </div>
@@ -25,7 +25,7 @@ export default function ProfileForm() {
         <Input
           {...register("profile_url")}
           id="username"
-          placeholder="https://github.com/allysonmaciel"
+          placeholder="example: https://github.com/torvalds"
           className="col-span-3"
         />
       </div>
