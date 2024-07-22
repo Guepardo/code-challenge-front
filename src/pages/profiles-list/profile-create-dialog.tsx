@@ -20,6 +20,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProfile } from "@/api/profiles";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { AxiosError } from "axios";
+import { extractMessageFromErrorResponse } from "@/lib/utils";
 
 export default function ProfileCreateDialog() {
   const [open, setOpen] = useState(false);
@@ -49,13 +51,9 @@ export default function ProfileCreateDialog() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create profile",
+        description: extractMessageFromErrorResponse(error as AxiosError),
       });
     }
-  }
-
-  if (!methods.formState.isValid) {
-    console.log(methods.formState.errors);
   }
 
   return (
