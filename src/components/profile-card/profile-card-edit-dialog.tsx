@@ -20,6 +20,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ProfileResponse, updateProfile } from "@/api/profiles";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
+import { extractMessageFromErrorResponse } from "@/lib/utils";
+import { AxiosError } from "axios";
 
 export type ProfileCardEditDialogProps = {
   id: string;
@@ -55,16 +57,16 @@ export default function ProfileCardEditDialog({
 
   async function handleSubmit(data: NewProfileSchemaType) {
     try {
-      updateProfileMutation(data);
+      await updateProfileMutation(data);
       toast({ title: "Success", description: "Profile updated successfully" });
       setOpen(false);
     } catch (error) {
-      toast({ title: "Error", description: "Failed to update profile" });
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: extractMessageFromErrorResponse(error as AxiosError),
+      });
     }
-  }
-
-  if (!methods.formState.isValid) {
-    console.log(methods.formState.errors);
   }
 
   return (
